@@ -50,10 +50,41 @@ features<-read.table("features.txt") #nome das colunas
 
 # Extract just means and std
 choosecollumns<-grep("[Mm]ean|std",colnames(total.data))
+
 new.total<-total.data[,c(1:3,choosecollumns)]
 
+exceptangles<-grep("angle",colnames(new.total))
+
+new.total.wo.angles<-new.total[,-exceptangles]
+
+tidy<-aggregate(new.total.wo.angles[,4:82],list(new.total.wo.angles[,1],new.total.wo.angles[,2],new.total.wo.angles[,3]),mean)
+
+# Check data
+#How many subject has 6 records (one for each activity)? (Should be 30)
+sum(table(tidy[,1])==6)
+
+## put names on columns
+#restoring names of columns
+colnames(tidy)<-colnames(new.total.wo.angles)
+
+# excluding typo "BodyBody"
+colnames(tidy)<-sub("BodyBody","Body",colnames(tidy))
+
+colnames(tidy)<-sub("tBodyAcc","TimeOfBodyAcceleration",colnames(tidy))
+colnames(tidy)<-sub("tGravityAcc","TimeOfGravityAcceleration",colnames(tidy))
+colnames(tidy)<-sub("tBodyGyro","TimeOfBodyGyroscope",colnames(tidy))
+
+colnames(tidy)<-sub("fBodyAcc","FrequencyOfBodyAcceleration",colnames(tidy))
+colnames(tidy)<-sub("fGravityAcc","FrequencyOfGravityAcceleration",colnames(tidy))
+colnames(tidy)<-sub("fBodyGyro","FrequencyOfBodyGyroscope",colnames(tidy))
 
 
 
+
+colnames(tidy)<-sub("std\\(\\)","standartdeviation",colnames(tidy))
+
+colnames(tidy)<-sub("mean\\(\\)","mean",colnames(tidy))
+
+write.table(tidy,"ProjectOftidyData.txt", row.names=F)
 
 
