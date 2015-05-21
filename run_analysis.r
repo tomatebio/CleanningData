@@ -88,3 +88,5 @@ colnames(tidy)<-sub("mean\\(\\)","mean",colnames(tidy))
 write.table(tidy,"ProjectOftidyData.txt", row.names=F)
 
 
+
+
