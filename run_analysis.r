@@ -22,7 +22,7 @@ features<-read.table("features.txt") #nome das colunas
 
    ## Merge with test.data to create a big data frame with all measures
    test.data<-cbind(test.data,testx)
-   colnames(test.data)<-c("subject_id","type_of_activity","activity",as.vector(features$V2))
+   colnames(test.data)<-c("subjectId","typeOfActivity","activity",as.vector(features$V2))
 
 ## Load files from train grupo
    trainx<-read.table("train/X_train.txt")
@@ -34,7 +34,7 @@ features<-read.table("features.txt") #nome das colunas
    train.data<-data.frame(subject.train,typetrain,trainy)
    ## Merge with train.data to create a big data frame with all measures
    train.data<-cbind(train.data,trainx)
-   colnames(train.data)<-c("subject_id","type_of_activity","activity",as.vector(features$V2))
+   colnames(train.data)<-c("subjectId","typeOfActivity","activity",as.vector(features$V2))
 
 ## Merge train data with test data to complete first step of project
 #  "Merges the training and the test sets to create one data set."
@@ -42,7 +42,7 @@ features<-read.table("features.txt") #nome das colunas
 
 # Transform activity and type_of_activity into factors
    total.data$activity<-as.factor(total.data$activity)
-   total.data$type_of_activity<-as.factor(total.data$type_of_activity)
+   total.data$typeOfActivity<-as.factor(total.data$typeOfActivity)
 
 # Put names instead of codes in activity
    labels<-read.table("activity_labels.txt")
@@ -69,22 +69,26 @@ colnames(tidy)<-colnames(new.total.wo.angles)
 
 # excluding typo "BodyBody"
 colnames(tidy)<-sub("BodyBody","Body",colnames(tidy))
-
+colnames(tidy)<-sub("-meanFreq()","meanOfFrequency",colnames(tidy))
 colnames(tidy)<-sub("tBodyAcc","TimeOfBodyAcceleration",colnames(tidy))
 colnames(tidy)<-sub("tGravityAcc","TimeOfGravityAcceleration",colnames(tidy))
 colnames(tidy)<-sub("tBodyGyro","TimeOfBodyGyroscope",colnames(tidy))
 
-colnames(tidy)<-sub("fBodyAcc","FrequencyOfBodyAcceleration",colnames(tidy))
+colnames(tidy)<-sub("^fBodyAcc","FrequencyOfBodyAcceleration",colnames(tidy))
 colnames(tidy)<-sub("fGravityAcc","FrequencyOfGravityAcceleration",colnames(tidy))
 colnames(tidy)<-sub("fBodyGyro","FrequencyOfBodyGyroscope",colnames(tidy))
+colnames(tidy)<-sub("\\(\\)","",colnames(tidy))
+colnames(tidy)<-sub("std","standartdeviation",colnames(tidy))
 
 
+colnames(tidy)<-sub("mean","Mean",colnames(tidy))
+colnames(tidy)<-sub("Mag","Magnitude",colnames(tidy))
+
+require(plyr)
+require(dplyr)
 
 
-colnames(tidy)<-sub("std\\(\\)","standartdeviation",colnames(tidy))
-
-colnames(tidy)<-sub("mean\\(\\)","mean",colnames(tidy))
-
+tidy<-ddply(tidy, .(subjectId,activity,typeOfActivity),numcolwise(mean))
 write.table(tidy,"ProjectOftidyData.txt", row.names=F)
 
 
