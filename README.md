@@ -11,10 +11,11 @@ Universitat Politècnica de Catalunya (BarcelonaTech). Vilanova i la Geltrú (08
 activityrecognition '@' smartlab.ws 
 
 ## The script 
-First the script load files for test group create a new variable called "test" and merge everything to do a big data set with all measures of test group.  Second the script do the same with a train group.
+First the script load files for test group create  and merge everything to do a big data set with all measures of test group.  Second the script do the same with a train group.
 
 Third, the train data set and test data set are merged by rbind function. I decide put a new variable called "typeofactivity" to make easy to recognize who is test and who is train subject. After this the activity type of activity are  coerced to factor. And the codes of activity are change by names of activity.
 
-Following, the variables that contain mean and std() in names are extract from  raw data set to be in tidy data set. The "angles" variables are ignored. The data consistence are check by how many records are for each individual. I should be 6.
+Following, the variables that contain mean and std() in names are extract from  raw data set to be in tidy data set. The "angles" variables are ignored. The data consistence are check by how many records are for each individual. It should be 6.
 
-The names of columns are restored  and one error is fixed ( "Body" instead of "BodyBody". And new names are given to columns following the instructions in raw data set. Finally the tidy data is write in a txt file.
+The names of columns are restored  and one error is fixed ( "Body" instead of "BodyBody". And new names are given to columns following the instructions in raw data set. Finally the tidy data is write in a .txt file.
+
